@@ -9,12 +9,15 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.room.Room;
 
+import me.dio.soccernews.data.local.AppDatabase;
 import me.dio.soccernews.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,21 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+        setupDB();
     }
 
+    private void setupDB() {
+        db = Room.databaseBuilder(this, AppDatabase.class, "soccer-news")
+                .allowMainThreadQueries()
+                .build();
+    }
+
+    public AppDatabase getDb() {
+        return db;
+    }
+
+    public void setDb(AppDatabase db) {
+        this.db = db;
+    }
 }
