@@ -7,22 +7,46 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import kotlin.reflect.KCallable;
+import me.dio.soccernews.data.remote.SoccerNewsApi;
 import me.dio.soccernews.domain.News;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NewsViewModel extends ViewModel {
 
-    private final MutableLiveData<List<News>> news;
+    private final MutableLiveData<List<News>> news = new MutableLiveData<>();
+    private final SoccerNewsApi api;
 
     public NewsViewModel() {
-        this.news = new MutableLiveData<>();
 
-        // TODO remover mock de notícias
-        List<News> news = new ArrayList<>();
-        news.add(new News("Ferroviária tem desfalques importantes", "Lorem Ipsum is simply dummy text of the printing and typesetting industry"));
-        news.add(new News("Ferrinha joga no sábado", "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book"));
-        news.add(new News("Copa do Mundo feminina está terminando", "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged"));
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://marcosnakahara.github.io/soccer-news-api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        api = retrofit.create(SoccerNewsApi.class);
+        findNews();
+    }
 
-        this.news.setValue(news);
+    public void findNews() {
+        api.getpNews().enqueue(new Callback<List<News>>() {
+            @Override
+            public void onResponse(Call<List<News>> call, Response<List<News>> response) {
+                if (response.isSuccessful()) {
+                    news.setValue(response.body());
+                } else {
+                    // TODO tratamento de erros
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<News>> call, Throwable t) {
+                // TODO tratamento de erros
+            }
+        });
     }
 
     public LiveData<List<News>> getNews() {
