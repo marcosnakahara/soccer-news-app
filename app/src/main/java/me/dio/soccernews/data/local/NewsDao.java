@@ -1,7 +1,7 @@
 package me.dio.soccernews.data.local;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -14,7 +14,7 @@ import me.dio.soccernews.domain.News;
 public interface NewsDao {
 
     @Query("SELECT * FROM news WHERE favorite = 1")
-    List<News> loadAFavoriteNews();
+    LiveData<List<News>> loadAFavoriteNews();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void save(News news);

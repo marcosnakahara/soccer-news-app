@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -20,8 +19,8 @@ import me.dio.soccernews.domain.News;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
-    private List<News> news;
-    private FavoriteListener favoriteListener;
+    private final List<News> news;
+    private final FavoriteListener favoriteListener;
 
     public NewsAdapter(List<News> news, FavoriteListener favoriteListener) {
         this.news = news;
