@@ -1,2 +1,2 @@
 # Soccer News App
-Aplicativo de notícias sobre futebol feminino
+Desafio de projeto - Aplicativo de notícias sobre futebol feminino
